@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Proxie Sticker</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f6f9; color: #333; display: flex; height: 100vh; overflow: hidden; }
+
+        /* 📱 SIDEBAR KIRI */
+        .sidebar { width: 280px; background-color: #ffffff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; padding: 25px 15px; height: 100vh; flex-shrink: 0; }
+        .logo-section { font-size: 22px; font-weight: bold; color: #3f51b5; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; padding-left: 10px; }
+        .menu-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .menu-item { padding: 12px 15px; border-radius: 10px; color: #666; text-decoration: none; font-weight: 500; transition: 0.3s; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+        .menu-item.active, .menu-item:hover { background-color: #e8eaf6; color: #3f51b5; }
+
+        /* 🖥️ KONTEN KANAN */
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        .topbar { height: 70px; background-color: #3f51b5; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
+        .refresh-btn { background-color: #ffffff; color: #3f51b5; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+        /* 📦 AREA KONTEN HALAMAN */
+        .page-content { padding: 30px; display: none; flex-direction: column; gap: 25px; }
+        .page-content.active { display: flex; }
+
+        /* CARDS & TABEL */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .card { background-color: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #3f51b5; }
+        .card-title { font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+        .card-value { font-size: 19px; font-weight: bold; color: #222; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-subtext { font-size: 11px; color: #666; line-height: 1.4; }
+        
+        .table-container { background-color: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .table-container h3 { margin-bottom: 15px; color: #444; display: flex; align-items: center; gap: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        
+        th, td { padding: 12px 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        th { background-color: #f8f9fa; color: #555; }
+        
+        /* ⚙️ LAYOUT GRID UNTUK HALAMAN PROMOSI (2 KOLOM) */
+        .promosi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+
+        /* FORM EDIT INPUT */
+        .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+        .form-group label { font-weight: bold; font-size: 13px; color: #555; }
+        .input-text { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+        .input-edit { width: 100px; padding: 6px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; text-align: center; }
+        .btn-save-prod { background-color: #4caf50; color: white; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; text-align: center; }
+        .btn-save-prod:hover { background-color: #43a047; }
+        .status-select { background-color: #f4f6f9; border: 1px solid #ccc; padding: 6px; border-radius: 6px; }
+
+        /* AREA GUDANG CARDS */
+        .gudang-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .gudang-card { background-color: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid #ff9800; }
+
+        /* Pelengkap Visual */
+        .stars { color: #ffb703; font-weight: bold; }
+        .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; background-color: #eee; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div>
+            <div class="logo-section">🌀 ProxieSticker</div>
+            <ul class="menu-list">
+                <li><a class="menu-item active" onclick="bukaHalaman('dashboard-page', this)">📊 Dashboard</a></li>
+                <li><a class="menu-item" onclick="bukaHalaman('products-page', this)">📦 Products</a></li>
+                <li><a class="menu-item" onclick="bukaHalaman('gudang-page', this)">📍 Alamat Gudang</a></li>
+                <li><a class="menu-item" onclick="bukaHalaman('promosi-page', this)">🎟:: Manajemen Promosi</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="topbar">
+            <h2 id="topbar-title">Marketing & Orders Dashboard</h2>
+            <button class="refresh-btn" onclick="muatData()">🔄 Refresh Data</button>
+        </div>
+
+        <div id="dashboard-page" class="page-content active">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-title">Total Orders</div>
+                    <div class="card-value" id="card-total-orders">0</div>
+                </div>
+                <div class="card" style="border-left-color: #4caf50;">
+                    <div class="card-title">Revenue (Pendapatan)</div>
+                    <div class="card-value" id="card-revenue">Rp 0</div>
+                </div>
+                <div class="card" style="border-left-color: #e91e63;">
+                    <div class="card-title">🎟️ Voucher Diskon</div>
+                    <div class="card-value" id="dash-kode-voucher" style="font-size: 15px; color: #e91e63;">PROXIE_UNTUNG</div>
+                    <div class="card-subtext">Potongan: <strong id="dash-potongan-voucher">Rp 5.000</strong></div>
+                    <div class="card-subtext">Min. Beli: <span id="dash-min-voucher">Rp 25.000</span></div>
+                </div>
+                <div class="card" style="border-left-color: #00bcd4;">
+                    <div class="card-title">🚚 Gratis Ongkir</div>
+                    <div class="card-value" id="dash-kode-ongkir" style="font-size: 15px; color: #00bcd4;">FREESHIP_PROXIE</div>
+                    <div class="card-subtext">Subsidi: <strong id="dash-subsidi-ongkir">Rp 10.000</strong></div>
+                    <div class="card-subtext">Min. Beli: <span id="dash-min-ongkir">Rp 40.000</span></div>
+                </div>
+                <div class="card" style="border-left-color: #9c27b0;">
+                    <div class="card-title">⚡ Flash Sale Promo</div>
+                    <div class="card-value" id="dash-kode-flash" style="font-size: 15px; color: #9c27b0;">FLASH_SALE_PROXIE</div>
+                    <div class="card-subtext">Diskon: <strong id="dash-diskon-flash">20% Off</strong></div>
+                    <div class="card-subtext">Min. Item: <span id="dash-min-flash">3 Pack</span></div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3>📋 Recent Payment History</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Pelanggan</th>
+                            <th>WhatsApp</th>
+                            <th>Alamat</th>
+                            <th>Detail Stiker</th>
+                            <th>Total Harga</th>
+                            <th>Status Pesanan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-pesanan">
+                        <tr><td colspan="7" style="text-align: center;">Memuat data pesanan...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <h3>⭐ Ulasan & Feedback Pelanggan</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 150px;">Nama</th>
+                            <th style="width: 120px;">Rating</th>
+                            <th>Komentar Ulasan</th>
+                            <th style="width: 180px;">Produk Yang Dibeli</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Reihan Dafa</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span> (5.0)</td>
+                            <td>"Gila cuy cuttingannya rapih abis, bahannya tebel anti air pas ditempel di laptop!"</td>
+                            <td><span style="font-size: 13px; background: #e8eaf6; padding: 4px 8px; border-radius: 4px; color: #3f51b5; font-weight: bold;">Pack B (Isi 20)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Novita</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span> (5.0)</td>
+                            <td>"Keren banged sticker kaligrafinya, sangat rapih cuttingannya"</td>
+                            <td><span style="font-size: 13px; background: #e8eaf6; padding: 4px 8px; border-radius: 4px; color: #3f51b5; font-weight: bold;">Pack B (Isi 20)</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ahmad Subarjo</strong></td>
+                            <td><span class="stars">⭐⭐⭐⭐⭐</span> (5.0)</td>
+                            <td>"Respon adminnya cepet, packing aman pake bubble wrap. Sukses terus Proxie Sticker!"</td>
+                            <td><span style="font-size: 13px; background: #e8eaf6; padding: 4px 8px; border-radius: 4px; color: #3f51b5; font-weight: bold;">Pack A (Isi 10)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="products-page" class="page-content">
+            <div class="table-container">
+                <h3>Manajemen Stok & Harga Stiker</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Nama Produk</th>
+                            <th>Harga (Rp)</th>
+                            <th>Stok Barang</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="image/Sticker-Animasi.jpeg" alt="Stiker A" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack A (Isi 10)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-1" value="15000"></td>
+                            <td><input type="number" class="input-edit" id="stock-1" value="50"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(1)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/Sticker-Kata-Kata.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/Sticker-Laba-Laba.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/Sticker-List-Kaca-mobil.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/Sticker-List-Toyota.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/Sticker-Real-Madrid.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                        <tr>
+                            <td><img src="image/StickerKaligrafi.jpeg" alt="Stiker B" class="product-img" onerror="this.src='https://via.placeholder.com/60?text=No+Img'"></td>
+                            <td><strong>Stiker Proxie Pack B (Isi 20)</strong></td>
+                            <td><input type="number" class="input-edit" id="price-2" value="28000"></td>
+                            <td><input type="number" class="input-edit" id="stock-2" value="35"></td>
+                            <td><button class="btn-save-prod" onclick="simpanProduk(2)">💾 Simpan</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+              
+            </div>
+        </div>
+
+        <div id="gudang-page" class="page-content">
+            <div class="gudang-grid">
+                <div class="gudang-card">
+                    <h4 style="color: blue; margin-bottom: 10px;">📍 1. Gudang Pusat (Tangerang)</h4>
+                    <p style="font-size: 14px; color: #555; line-height: 1.5;">Jl. Techno Raya No. 42, Blok B, Kecamatan Serpong, Tangerang, Banten</p>
+                </div>
+                <div class="gudang-card">
+                    <h4 style="color: blue; margin-bottom: 10px;">📍 2. Gudang Cabang Jakarta</h4>
+                    <p style="font-size: 14px; color: #555; line-height: 1.5;">Jl. Mangga Besar No. 12, Kavling 4, Taman Sari, Jakarta Barat</p>
+                </div>
+                <div class="gudang-card">
+                    <h4 style="color: blue; margin-bottom: 10px;">📍 3. Gudang Cabang Bandung</h4>
+                    <p style="font-size: 14px; color: #555; line-height: 1.5;">Jl. Dago Atas No. 88, Kelurahan Coblong, Kota Bandung, Jawa Barat</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="promosi-page" class="page-content">
+            <div class="promosi-grid">
+                
+                <div class="table-container">
+                    <h3 style="color: #e91e63;">⚙️ Voucher Potongan Diskon</h3>
+                    <div class="form-group">
+                        <label>Kode Voucher:</label>
+                        <input type="text" id="input-kode-voucher" class="input-text" value="PROXIE_UNTUNG">
+                    </div>
+                    <div class="form-group">
+                        <label>Nominal Potongan Harga (Rp):</label>
+                        <input type="number" id="input-potongan-voucher" class="input-text" value="5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimal Pembelian Syarat (Rp):</label>
+                        <input type="number" id="input-min-voucher" class="input-text" value="25000">
+                    </div>
+                    <button class="btn-save-prod" style="background-color: #e91e63;" onclick="updateVoucherDinamis()">💾 Terapkan Voucher</button>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #4caf50;">⚙️ Voucher Kombo Cashback</h3>
+                    <div class="form-group">
+                        <label>Kode Cashback:</label>
+                        <input type="text" id="input-kode-cashback" class="input-text" value="CB_PROXIE">
+                    </div>
+                    <div class="form-group">
+                        <label>Nominal Cashback Koin (Rp):</label>
+                        <input type="number" class="input-text" value="7500" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Minimal Pembelian Syarat (Rp):</label>
+                        <input type="number" class="input-text" value="35000" readonly>
+                    </div>
+                    <button class="btn-save-prod" style="background-color: #4caf50;" onclick="alert('🔥 Promo Cashback Koin sukses diaktifkan!')">💾 Terapkan Cashback</button>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #00bcd4;">⚙️ Syarat Gratis Ongkir</h3>
+                    <div class="form-group">
+                        <label>Kode Gratis Ongkir:</label>
+                        <input type="text" id="input-kode-ongkir" class="input-text" value="FREESHIP_PROXIE">
+                    </div>
+                    <div class="form-group">
+                        <label>Maksimal Subsidi Ongkir (Rp):</label>
+                        <input type="number" id="input-subsidi-ongkir" class="input-text" value="10000">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimal Pembelian Syarat (Rp):</label>
+                        <input type="number" id="input-min-ongkir" class="input-text" value="40000">
+                    </div>
+                    <button class="btn-save-prod" style="background-color: #00bcd4;" onclick="updateOngkirDinamis()">💾 Terapkan Gratis Ongkir</button>
+                </div>
+
+                <div class="table-container">
+                    <h3 style="color: #9c27b0;">⚙️ Atur Diskon Flash Sale (%)</h3>
+                    <div class="form-group">
+                        <label>Kode Flash Sale:</label>
+                        <input type="text" id="input-kode-flash" class="input-text" value="FLASH_SALE_PROXIE">
+                    </div>
+                    <div class="form-group">
+                        <label>Besar Diskon Langsung (%):</label>
+                        <input type="text" id="input-diskon-flash" class="input-text" value="20%">
+                    </div>
+                    <div class="form-group">
+                        <label>Minimal Syarat Pembelian (Jumlah):</label>
+                        <input type="text" id="input-min-flash" class="input-text" value="3 Pack">
+                    </div>
+                    <button class="btn-save-prod" style="background-color: #9c27b0;" onclick="updateFlashDinamis()">💾 Terapkan Flash Sale</button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // NAVIGATION SYSTEM
+        function bukaHalaman(pageId, element) {
+            document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(menu => menu.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+
+            if(pageId === 'products-page') {
+                document.getElementById('topbar-title').innerText = "Product Management";
+            } else if (pageId === 'gudang-page') {
+                document.getElementById('topbar-title').innerText = "📍 Distribusi Gudang Proxie";
+            } else if (pageId === 'promosi-page') {
+                document.getElementById('topbar-title').innerText = "🎟️ Sistem Pengaturan Promosi";
+            } else {
+                document.getElementById('topbar-title').innerText = "Marketing & Orders Dashboard";
+            }
+        }
+
+        // REAL-TIME UPDATE PROMOSI DINAMIS
+        function updateVoucherDinamis() {
+            const kode = document.getElementById('input-kode-voucher').value;
+            const potongan = parseInt(document.getElementById('input-potongan-voucher').value) || 0;
+            const minBeli = parseInt(document.getElementById('input-min-voucher').value) || 0;
+
+            document.getElementById('dash-kode-voucher').innerText = kode.toUpperCase();
+            document.getElementById('dash-potongan-voucher').innerText = 'Rp ' + potongan.toLocaleString('id-ID');
+            document.getElementById('dash-min-voucher').innerText = 'Rp ' + minBeli.toLocaleString('id-ID');
+            alert('🔥 Voucher Diskon berhasil diperbarui secara Real-Time!');
+        }
+
+        function updateOngkirDinamis() {
+            const kode = document.getElementById('input-kode-ongkir').value;
+            const subsidi = parseInt(document.getElementById('input-subsidi-ongkir').value) || 0;
+            const minBeli = parseInt(document.getElementById('input-min-ongkir').value) || 0;
+
+            document.getElementById('dash-kode-ongkir').innerText = kode.toUpperCase();
+            document.getElementById('dash-subsidi-ongkir').innerText = 'Rp ' + subsidi.toLocaleString('id-ID');
+            document.getElementById('dash-min-ongkir').innerText = 'Rp ' + minBeli.toLocaleString('id-ID');
+            alert('🚚 Pengaturan Gratis Ongkir berhasil diterapkan!');
+        }
+
+        function updateFlashDinamis() {
+            const kode = document.getElementById('input-kode-flash').value;
+            const diskon = document.getElementById('input-diskon-flash').value;
+            const syarat = document.getElementById('input-min-flash').value;
+
+            document.getElementById('dash-kode-flash').innerText = kode.toUpperCase();
+            document.getElementById('dash-diskon-flash').innerText = diskon;
+            document.getElementById('dash-min-flash').innerText = syarat;
+            alert('⚡ Diskon Flash Sale Berhasil Diperbarui!');
+        }
+
+        // AMBIL DATA DATABASE PESANAN
+        async function muatData() {
+            const tbody = document.getElementById('tabel-pesanan');
+            try {
+                const response = await fetch('/api/orders');
+                if (!response.ok) throw new Error('DB gagal ditarik');
+                
+                const data = await response.json();
+                tbody.innerHTML = '';
+                
+                if (!data || data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #888; padding: 20px;">Belum ada pesanan masuk.</td></tr>`;
+                    return;
+                }
+
+                let totalRevenue = 0;
+                document.getElementById('card-total-orders').innerText = data.length;
+
+                data.forEach(order => {
+                    const harga = order.total_price || 0;
+                    if(order.status !== 'Dibatalkan') totalRevenue += harga;
+                    
+                    let waBersih = order.whatsapp ? String(order.whatsapp).replace(/[^0-9]/g, '') : '';
+                    if (!waBersih || waBersih.length < 5) waBersih = '628123456789';
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>#${order.id}</td>
+                            <td><strong>${order.customer_name}</strong></td>
+                            <td><a href="https://wa.me/${waBersih}" target="_blank" style="color: #4caf50; text-decoration: none; font-weight: bold;">+${order.whatsapp}</a></td>
+                            <td>${order.address}</td>
+                            <td>${order.sticker_detail}</td>
+                            <td>Rp ${harga.toLocaleString('id-ID')}</td>
+                            <td>
+                                <select class="status-select" onchange="updateStatus(${order.id}, this.value)">
+                                    <option value="Diproses" ${order.status === 'Diproses' ? 'selected' : ''}>⏳ Diproses</option>
+                                    <option value="Selesai" ${order.status === 'Selesai' ? 'selected' : ''}>✅ Selesai</option>
+                                    <option value="Dibatalkan" ${order.status === 'Dibatalkan' ? 'selected' : ''}>❌ Dibatalkan</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('card-revenue').innerText = 'Rp ' + totalRevenue.toLocaleString('id-ID');
+            } catch (error) { 
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: red;">Server Offline / Database Belum Jalan!</td></tr>`;
+            }
+        }
+
+        async function updateStatus(id, statusBaru) {
+            try {
+                await fetch(`/api/orders/${id}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: statusBaru })
+                });
+                muatData(); 
+            } catch (error) { alert('Gagal update status database!'); }
+        }
+
+        function simpanProduk(id) {
+            const harga = document.getElementById(`price-${id}`).value;
+            const stok = document.getElementById(`stock-${id}`).value;
+            alert(`Produk Diupdate!\nHarga: Rp ${parseInt(harga).toLocaleString('id-ID')}\nStok: ${stok} pcs`);
+        }
+
+        window.onload = function() { muatData(); };
+    </script>
+</body>
+</html>

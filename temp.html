@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxie Sticker</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="text-xl font-black tracking-widest text-slate-900">
+                PROXIE <span class="text-amber-600">STICKERS</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#" class="text-slate-900 hover:text-amber-600 transition">Home</a>
+                <a href="#katalog" class="hover:text-amber-600 transition">Katalog</a>
+                <a href="#custom" class="hover:text-amber-600 transition">Custom Order</a>
+                <a href="#" onclick="masukAdmin(event)" class="hover:text-amber-600 transition text-red-500 font-semibold">Web Admin 🔒</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <div class="relative cursor-pointer">
+                    <span class="text-xl">🛒 Keranjang</span>
+                    <span id="badge-cart" class="absolute -top-1 -right-2 bg-amber-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative bg-slate-900 text-white py-24 text-center overflow-hidden">
+        <div class="absolute inset-0 opacity-40 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1572045357999-d66e85024c6d?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="relative max-w-7xl mx-auto px-4">
+            <p class="text-amber-500 font-semibold tracking-wider uppercase text-sm mb-3">STICKER ESSENTIALS</p>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Bikin Ekspresimu Nyata.<br>Cetak Stiker Kustom Mu!</h1>
+            <p class="max-w-xl mx-auto text-base text-slate-300 mb-8">Bahan premium Vinyl, anti air, anti pudar, dan tanpa minimum order.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#katalog" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-medium transition">Lihat Katalog</a>
+                <a href="#custom" class="bg-white hover:bg-slate-100 text-slate-900 px-6 py-3 rounded-lg font-medium transition">Custom Sekarang</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="katalog" class="max-w-7xl mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Katalog Terpopuler</h2>
+            <p class="text-slate-500 mt-2">Pilih stiker kustom favorit lu di bawah ini</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden relative">
+                    <img src="image/Sticker-Animasi.jpeg" alt="Sticker 1" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Animasi'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker Animasi</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 25.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker Animasi', 25000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/StickerKaligrafi.jpeg" alt="Sticker 2" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Kaligrafi'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker Kaligrafi Kaca</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 30.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker Kaligrafi Kaca', 30000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-Kata-Kata.jpeg" alt="Sticker 3" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Kata-Kata'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker Kata-Kata Body Mobil</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 20.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker Kata-Kata Body Mobil', 20000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-Laba-Laba.jpeg" alt="Sticker 4" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Laba+Laba'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker Laba Laba</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 35.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker Laba Laba', 35000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-List-Kaca-mobil.jpeg" alt="Sticker 5" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+List+Kaca'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker List Kaca Mobil</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 40.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker List Kaca Mobil', 40000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-List-Toyota.jpeg" alt="Sticker 6" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Toyota+Racing'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker List Toyota Racing</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 45.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker List Toyota Racing', 45000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-Real-Madrid.jpeg" alt="Sticker 7" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Sticker+Real+Madrid'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker Real Madrid Official</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 15.000</p>
+                    <a href="#custom" onclick="pilihProduk('Sticker Real Madrid Official', 15000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+            <div class="bg-white group border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                <div class="h-64 bg-slate-100 overflow-hidden">
+                    <img src="image/Sticker-Animasi.jpeg" alt="Sticker 8" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300x250?text=Proxie+Special+Pack'">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="font-bold text-slate-800 text-base">Sticker animasi Samurai X</h3>
+                    <p class="text-amber-600 font-extrabold text-lg mt-1">Rp 50.000</p>
+                    <a href="#custom" onclick="pilihProduk('Proxie Special Pack Limited', 50000)" class="block w-full bg-slate-900 text-white text-sm font-medium py-2 rounded-lg mt-4">Pilih & Custom</a>
+                </div>
+            </div>
+
+        </div> 
+    </section>
+
+    <section id="custom" class="bg-slate-100 py-16 border-t border-slate-200">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-extrabold text-slate-900">Form Pemesanan Stiker</h2>
+                    <p class="text-slate-500 text-sm mt-1">Silahkan isi data diri dan pilih stiker favorit anda</p>
+                </div>
+                 
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nama Lengkap</label>
+                        <input type="text" id="customerName" placeholder="Masukkan nama anda" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Nomor WhatsApp</label>
+                        <input type="text" id="whatsapp" placeholder="masukan no whatsapp anda" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Alamat Lengkap Pengiriman</label>
+                        <textarea id="address" rows="3" placeholder="Isi Alamat Lengkap" class="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none transition"></textarea>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                        <label class="block text-sm font-bold text-slate-700 mb-2"> Pilih Produk Stiker</label>
+                        <select id="selectSticker" onchange="hitungOtomatis()" class="w-full px-3 py-2 border border-slate-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="Sticker Animasi|25000">Sticker Animasi — Rp 25.000</option>
+                            <option value="Sticker Kaligrafi Kaca|30000">Sticker Kaligrafi Kaca — Rp 30.000</option>
+                            <option value="Sticker Kata-Kata Body Mobil|20000">Sticker Kata-Kata Body Mobil — Rp 20.000</option>
+                            <option value="Sticker Laba Laba|35000">Sticker Laba Laba — Rp 35.000</option>
+                            <option value="Sticker List Kaca Mobil|40000">Sticker List Kaca Mobil — Rp 40.000</option>
+                            <option value="Sticker List Toyota Racing|45000">Sticker List Toyota Racing — Rp 45.000</option>
+                            <option value="Sticker Real Madrid Official|15000">Sticker Real Madrid Official — Rp 15.000</option>
+                            <option value="Proxie Special Pack Limited|50000">Proxie Special Pack Limited — Rp 50.000</option>
+                        </select>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                        <label class="block text-sm font-bold text-amber-900 mb-1"> Punya Kode Voucher / Promo?</label>
+                        <p class="text-xs text-amber-700 mb-2">Gunakan kode yang aktif dari Dashboard Admin untuk klaim potongan harga.</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="inputVoucher" placeholder="Contoh: PROXIE_UNTUNG" class="flex-1 px-4 py-2 border border-amber-300 rounded-xl focus:outline-none bg-white uppercase">
+                            <button type="button" onclick="klaimVoucher()" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl font-bold text-sm transition">Klaim</button>
+                        </div>
+                        <div id="statusPromo" class="text-xs font-semibold mt-2 text-slate-600 hidden"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center p-4 bg-slate-900 text-white rounded-xl">
+                        <div>
+                            <p class="text-xs text-slate-400 uppercase tracking-wider">Total Pembayaran</p>
+                            <p id="detailPotongan" class="text-xs text-emerald-400 font-medium"></p>
+                        </div>
+                        <div class="text-2xl font-black text-amber-500" id="displayTotal">Rp 25.000</div>
+                    </div>
+
+                    <button type="button" id="btnKirim" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow-md transition">
+                        PESAN SEKARANG
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+        <p>&copy; 2026 PROXIE STICKER PROJECT. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let hargaAsli = 25000;
+        let potonganDiskon = 0;
+        let totalAkhir = 25000;
+        let namaStiker = "Sticker Animasi";
+
+        // 🔐 FUNGSI PROTEKSI LOGIN POP-UP ADMIN
+        function masukAdmin(event) {
+            event.preventDefault(); 
+            const password = prompt("🚨 AREA TERBATAS! Masukkan Password Admin:");
+            
+            if (password === "admin123") {
+                alert("Akses diterima! Selamat datang Admin Proxie. 😎");
+                window.open("admin.html", "_blank"); 
+            } else if (password !== null) {
+                alert("❌ Password SALAH! Lu bukan admin ya, jangan coba-coba! 🤫");
+            }
+        }
+
+        function pilihProduk(nama, harga) {
+            const select = document.getElementById('selectSticker');
+            for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].value.startsWith(nama)) {
+                    select.selectedIndex = i;
+                    break;
+                }
+            }
+            hitungOtomatis();
+            document.getElementById('custom').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hitungOtomatis() {
+            const selectValue = document.getElementById('selectSticker').value;
+            const parts = selectValue.split('|');
+            namaStiker = parts[0];
+            hargaAsli = parseInt(parts[1]);
+
+            potonganDiskon = 0;
+            document.getElementById('statusPromo').classList.add('hidden');
+            document.getElementById('detailPotongan').innerText = "";
+            document.getElementById('inputVoucher').value = "";
+
+            totalAkhir = hargaAsli;
+            updateDisplay();
+        }
+
+        function klaimVoucher() {
+            const kode = document.getElementById('inputVoucher').value.trim().toUpperCase();
+            const statusPromo = document.getElementById('statusPromo');
+            const detailPotongan = document.getElementById('detailPotongan');
+
+            if (!kode) {
+                alert('Isi dulu kode promonya, bray! 🤨');
+                return;
+            }
+
+            statusPromo.classList.remove('hidden');
+
+            if (kode === "PROXIE_UNTUNG") {
+                if (hargaAsli >= 25000) {
+                    potonganDiskon = 5000;
+                    statusPromo.innerText = "✅ Kode PROXIE_UNTUNG berhasil dipasang!";
+                    statusPromo.className = "text-xs font-semibold mt-2 text-emerald-600";
+                    detailPotongan.innerText = "Dipotong Diskon: -Rp 5.000";
+                } else {
+                    alert("Waduh, syarat minimal belanja Rp 25.000 belum tercapai, bray!");
+                    resetPromo();
+                }
+            }
+            else if (kode === "FLASH_SALE_PROXIE") {
+                if (hargaAsli >= 35000) {
+                    potonganDiskon = hargaAsli * 0.20; 
+                    statusPromo.innerText = "⚡ Kode FLASH_SALE_PROXIE aktif! Diskon 20%";
+                    statusPromo.className = "text-xs font-semibold mt-2 text-purple-600";
+                    detailPotongan.innerText = `Dipotong Flash Sale 20%: -Rp ${potonganDiskon.toLocaleString('id-ID')}`;
+                } else {
+                    alert("Promo Flash Sale ini khusus untuk produk stiker seharga Rp 35.000 ke atas!");
+                    resetPromo();
+                }
+            }
+            else if (kode === "FREESHIP_PROXIE") {
+                if (hargaAsli >= 40000) {
+                    potonganDiskon = 10000;
+                    statusPromo.innerText = "🚚 Kode FREESHIP_PROXIE aktif! Gratis Ongkir terpasang.";
+                    statusPromo.className = "text-xs font-semibold mt-2 text-cyan-600";
+                    detailPotongan.innerText = "Subsidi Ongkir: -Rp 10.000";
+                } else {
+                    alert("Syarat gratis ongkir minimal belanja harus Rp 40.000, cuy!");
+                    resetPromo();
+                }
+            } else {
+                alert("❌ Kode voucher salah atau udah kedaluwarsa di Web Admin!");
+                resetPromo();
+            }
+
+            totalAkhir = hargaAsli - potonganDiskon;
+            if(totalAkhir < 0) totalAkhir = 0;
+            updateDisplay();
+        }
+
+        function resetPromo() {
+            potonganDiskon = 0;
+            document.getElementById('statusPromo').classList.add('hidden');
+            document.getElementById('detailPotongan').innerText = "";
+            totalAkhir = hargaAsli;
+        }
+
+        function updateDisplay() {
+            document.getElementById('displayTotal').innerText = 'Rp ' + totalAkhir.toLocaleString('id-ID');
+            document.getElementById('badge-cart').innerText = "1";
+        }
+
+        document.getElementById('btnKirim').addEventListener('click', async () => {
+            const customer_name = document.getElementById('customerName').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const address = document.getElementById('address').value;
+            
+            const sticker_detail = `${namaStiker} (Custom Order User)`;
+            const total_price = totalAkhir; 
+
+            if (!customer_name || !whatsapp || !address) {
+                alert('Waduh cuy, isi dulu semua kolomnya jangan dikosongin! 🚨');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/orders', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        customer_name, 
+                        whatsapp, 
+                        address, 
+                        sticker_detail, 
+                        total_price 
+                    })
+                });
+
+                const hasil = await response.json();
+
+                if (response.ok && hasil.success) {
+                    document.getElementById('customerName').value = '';
+                    document.getElementById('whatsapp').value = '';
+                    document.getElementById('address').value = '';
+                    window.location.href = `invoice.html?name=${encodeURIComponent(customer_name)}`;
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Aduh, servernya lagi pusing atau belum dinyalain cuy! 😭');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Pemesanan - Proxie Stickers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#0b1329] min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+
+    <div id="invoiceCard" class="bg-[#131c35] w-full max-w-md rounded-2xl shadow-2xl border border-slate-800 p-6 text-white transition-all duration-500 transform scale-100 opacity-100">
+        
+        <div class="text-center border-b border-slate-800 pb-4 mb-4">
+            <h1 class="text-xl font-black tracking-widest">PROXIE <span class="text-amber-500">STICKERS</span></h1>
+            <p class="text-xs text-slate-400 mt-1">Nota Pemesanan Digital Toko</p>
+        </div>
+
+        <div class="space-y-3 text-sm mb-6">
+            <div class="flex justify-between">
+                <span class="text-slate-400">Nama Pelanggan:</span>
+                <span id="invoiceName" class="font-semibold text-amber-400">-</span>
+            </div>
+            <div class="flex justify-between">
+                <span class="text-slate-400">Status Pembayaran:</span>
+                <span class="bg-amber-500/10 text-amber-400 text-xs px-2 py-0.5 rounded-md font-bold border border-amber-500/20">BELUM DIBAYAR</span>
+            </div>
+        </div>
+
+        <div class="bg-[#1e294b] rounded-xl p-4 border border-slate-700/60 space-y-4">
+            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider border-b border-slate-700/60 pb-2"> Pilihan Metode Pembayaran :</p>
+            
+            <div class="space-y-2.5 text-xs">
+                <div class="bg-[#131c35] p-3 rounded-lg border border-slate-800 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-amber-500">BANK BCA</p>
+                        <p class="text-slate-300 tracking-wide mt-0.5 font-mono">7120554497</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">a.n. REIHAN DAFA RIZKY</p>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText('1234567890'); alert('No. Rekening BCA berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
+                </div>
+
+                <div class="bg-[#131c35] p-3 rounded-lg border border-slate-800 flex justify-between items-center">
+                    <div>
+                        <p class="font-bold text-blue-400">BANK MANDIRI</p>
+                        <p class="text-slate-300 tracking-wide mt-0.5 font-mono">1550013235679</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">a.n. REIHAN DAFA RIZKY</p>
+                    </div>
+                    <button onclick="navigator.clipboard.writeText('1310012345678'); alert('No. Rekening Mandiri berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
+                </div>
+            </div>
+
+            <div class="bg-[#131c35] p-3 rounded-lg border border-slate-800 text-center">
+                <p class="font-bold text-emerald-400 text-xs mb-2">Pembayaran Melalui Qris</p>
+                <div class="bg-white p-2 rounded-lg inline-block shadow-md">
+                    <img id="qrisImage" src="image/qris.png" alt="QRIS Proxie Stickers" class="w-32 h-32 mx-auto object-contain" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ProxieStickers_ReihanDafaRizky'">
+                </div>
+                <p class="text-[10px] text-slate-400 mt-1.5 italic">Bisa di-scan pake GoPay, OVO, Dana, LinkAja, atau m-Banking</p>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <button onclick="pemicuSukses()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-[#0b1329] font-bold text-sm rounded-xl py-3.5 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]">
+                💸 Saya Sudah Bayar & Selesai
+            </button>
+        </div>
+    </div>
+
+    <div id="successModal" class="fixed inset-0 bg-[#0b1329]/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-all duration-500">
+        <div class="bg-[#131c35] w-full max-w-sm rounded-2xl border border-slate-800 p-8 text-center shadow-2xl transform scale-75 transition-all duration-500">
+            
+            <div class="w-20 h-20 bg-emerald-500/10 border-2 border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <svg class="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h2 class="text-2xl font-extrabold text-white">Transaksi Berhasil!</h2>
+            <p class="text-slate-400 text-sm mt-2">Pembayaran berhasil diverifikasi</p>
+            <p class="text-slate-400 text-sm mt-2">Pesanan akan segera diproses tim Proxie Stickers</p>
+            
+
+            <button onclick="kembaliBelanja()" class="mt-6 w-full bg-amber-500 hover:bg-amber-600 text-[#0b1329] font-bold text-sm rounded-xl py-3 transition-all cursor-pointer">
+                Selesai & Kembali Belanja
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Tangkap nama pembeli dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameInput = urlParams.get('name');
+        if (nameInput) {
+            document.getElementById('invoiceName').innerText = decodeURIComponent(nameInput);
+        }
+
+        // FUNGSI ANIMASI POP UP KETIKA TOMBOL DIKLIK
+        function pemicuSukses() {
+            const card = document.getElementById('invoiceCard');
+            const modal = document.getElementById('successModal');
+            const modalContent = modal.querySelector('div');
+
+            card.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                card.classList.add('hidden');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-75');
+                    modalContent.classList.add('scale-100');
+                }, 50);
+            }, 300);
+        }
+
+        // KEMBALI KE HALAMAN USER (TEMP.HTML)
+        function kembaliBelanja() {
+            window.location.href = 'temp.html';
+        }
+    </script>
+</body>
+</html>
