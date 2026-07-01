@@ -93,21 +93,17 @@
             const subtitle = document.getElementById('formSubtitle');
 
             if (type === 'register') {
-                // Efek Geser Keluar untuk Login
                 loginForm.classList.add('-translate-x-full', 'opacity-0', 'pointer-events-none');
                 loginForm.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
                 
-                // Efek Geser Masuk untuk Register
                 registerForm.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
                 registerForm.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
                 
                 subtitle.innerText = 'Buat akun barumu untuk mulai memesan stiker';
             } else {
-                // Efek Geser Masuk untuk Login
                 loginForm.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
                 loginForm.classList.remove('-translate-x-full', 'opacity-0', 'pointer-events-none');
                 
-                // Efek Geser Keluar untuk Register
                 registerForm.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
                 registerForm.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
                 
@@ -146,8 +142,8 @@
 
             if ((user === 'user123' && pass === 'user123') || (passwordTerdaftar && passwordTerdaftar === pass)) {
                 loginError.classList.add('hidden');
-                <a href="/temp.html">Login</a>
-                <form action="/api/login" method="POST">    
+                // 🟢 SEKARANG JALURNYA RELATIF (BIAR AMAN DI NETLIFY / VERCEL)
+                window.location.href = '/temp.html';
             } else {
                 loginError.classList.remove('hidden');
             }
