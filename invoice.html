@@ -32,6 +32,7 @@
             </div>
         </div>
 
+        <!-- DETAIL ITEM DAN TOTAL BELANJA -->
         <div class="bg-[#1e294b]/50 rounded-xl p-3.5 border border-slate-700/40 text-xs space-y-2 mb-4">
             <p class="font-bold text-slate-300 uppercase tracking-wider border-b border-slate-700/40 pb-1.5">Detail Item:</p>
             <div class="flex justify-between gap-4">
@@ -91,7 +92,7 @@
             <h2 class="text-2xl font-extrabold text-white">Transaksi Berhasil!</h2>
             <p class="text-slate-400 text-sm mt-2">Pembayaran berhasil diverifikasi</p>
             <p class="text-slate-400 text-sm mt-2">Pesanan akan segera diproses tim Proxie Stickers</p>
-
+            
             <button onclick="kembaliBelanja()" class="mt-6 w-full bg-amber-500 hover:bg-amber-600 text-[#0b1329] font-bold text-sm rounded-xl py-3 transition-all cursor-pointer">
                 Selesai & Kembali Belanja
             </button>
@@ -99,22 +100,21 @@
     </div>
 
     <script>
-        // 🚀 AMBIL DATA DARI URL & LOCALSTORAGE
+        // Tangkap nama pembeli dari URL
         const urlParams = new URLSearchParams(window.location.search);
         const nameInput = urlParams.get('name');
-        
         if (nameInput) {
             document.getElementById('invoiceName').innerText = decodeURIComponent(nameInput);
         }
 
-        // Ambil data detail pesanan dari localStorage temp.html tadi bray
+        // Ambil data item dari localStorage yang diisi oleh temp.html
         const dataOrderRaw = localStorage.getItem('latest_order');
         if (dataOrderRaw) {
             const dataOrder = JSON.parse(dataOrderRaw);
             document.getElementById('invoiceSticker').innerText = dataOrder.sticker_detail;
             document.getElementById('invoicePrice').innerText = 'Rp ' + dataOrder.total_price.toLocaleString('id-ID');
             
-            // Jaga-jaga kalau namanya ga kebaca di URL, fallback pake nama dari dataOrder
+            // Pengaman cadangan jika parameter URL kosong
             if (!nameInput && dataOrder.customer_name) {
                 document.getElementById('invoiceName').innerText = dataOrder.customer_name;
             }
@@ -139,11 +139,13 @@
             }, 300);
         }
 
-        // KEMBALI KE HALAMAN USER (TEMP.HTML)
+        // KEMBALI KE HALAMAN UTAMA DENGAN AMAN
         function kembaliBelanja() {
-            // Hapus cache orderan lama biar bersih
+            // Bersihkan memori transaksi lama
             localStorage.removeItem('latest_order');
-            window.location.href = 'temp.html';
+            
+            // Redirect aman menggunakan path relatif agar tidak memicu hilangnya halaman di Netlify
+            window.location.href = './temp.html';
         }
     </script>
 </body>
