@@ -146,7 +146,8 @@
 
             if ((user === 'user123' && pass === 'user123') || (passwordTerdaftar && passwordTerdaftar === pass)) {
                 loginError.classList.add('hidden');
-                window.location.href = 'http://localhost:3000/temp.html';
+                <a href="/temp.html">Login</a>
+                <form action="/api/login" method="POST">    
             } else {
                 loginError.classList.remove('hidden');
             }
