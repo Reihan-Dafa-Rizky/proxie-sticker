@@ -21,7 +21,7 @@
             <p class="text-xs text-slate-400 mt-1">Nota Pemesanan Digital Toko</p>
         </div>
 
-        <div class="space-y-3 text-sm mb-6">
+        <div class="space-y-3 text-sm mb-4">
             <div class="flex justify-between">
                 <span class="text-slate-400">Nama Pelanggan:</span>
                 <span id="invoiceName" class="font-semibold text-amber-400">-</span>
@@ -29,6 +29,14 @@
             <div class="flex justify-between">
                 <span class="text-slate-400">Status Pembayaran:</span>
                 <span class="bg-amber-500/10 text-amber-400 text-xs px-2 py-0.5 rounded-md font-bold border border-amber-500/20">BELUM DIBAYAR</span>
+            </div>
+        </div>
+
+        <div class="bg-[#1e294b]/50 rounded-xl p-3.5 border border-slate-700/40 text-xs space-y-2 mb-4">
+            <p class="font-bold text-slate-300 uppercase tracking-wider border-b border-slate-700/40 pb-1.5">Detail Item:</p>
+            <div class="flex justify-between gap-4">
+                <span id="invoiceSticker" class="text-slate-300 font-medium">-</span>
+                <span id="invoicePrice" class="text-amber-400 font-bold whitespace-nowrap">Rp 0</span>
             </div>
         </div>
 
@@ -42,7 +50,7 @@
                         <p class="text-slate-300 tracking-wide mt-0.5 font-mono">7120554497</p>
                         <p class="text-[10px] text-slate-400 mt-0.5">a.n. REIHAN DAFA RIZKY</p>
                     </div>
-                    <button onclick="navigator.clipboard.writeText('1234567890'); alert('No. Rekening BCA berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
+                    <button onclick="navigator.clipboard.writeText('7120554497'); alert('No. Rekening BCA berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
                 </div>
 
                 <div class="bg-[#131c35] p-3 rounded-lg border border-slate-800 flex justify-between items-center">
@@ -51,7 +59,7 @@
                         <p class="text-slate-300 tracking-wide mt-0.5 font-mono">1550013235679</p>
                         <p class="text-[10px] text-slate-400 mt-0.5">a.n. REIHAN DAFA RIZKY</p>
                     </div>
-                    <button onclick="navigator.clipboard.writeText('1310012345678'); alert('No. Rekening Mandiri berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
+                    <button onclick="navigator.clipboard.writeText('1550013235679'); alert('No. Rekening Mandiri berhasil disalin! 📋')" class="text-[10px] bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded font-semibold transition">Salin</button>
                 </div>
             </div>
 
@@ -83,7 +91,6 @@
             <h2 class="text-2xl font-extrabold text-white">Transaksi Berhasil!</h2>
             <p class="text-slate-400 text-sm mt-2">Pembayaran berhasil diverifikasi</p>
             <p class="text-slate-400 text-sm mt-2">Pesanan akan segera diproses tim Proxie Stickers</p>
-            
 
             <button onclick="kembaliBelanja()" class="mt-6 w-full bg-amber-500 hover:bg-amber-600 text-[#0b1329] font-bold text-sm rounded-xl py-3 transition-all cursor-pointer">
                 Selesai & Kembali Belanja
@@ -92,11 +99,25 @@
     </div>
 
     <script>
-        // Tangkap nama pembeli dari URL
+        // 🚀 AMBIL DATA DARI URL & LOCALSTORAGE
         const urlParams = new URLSearchParams(window.location.search);
         const nameInput = urlParams.get('name');
+        
         if (nameInput) {
             document.getElementById('invoiceName').innerText = decodeURIComponent(nameInput);
+        }
+
+        // Ambil data detail pesanan dari localStorage temp.html tadi bray
+        const dataOrderRaw = localStorage.getItem('latest_order');
+        if (dataOrderRaw) {
+            const dataOrder = JSON.parse(dataOrderRaw);
+            document.getElementById('invoiceSticker').innerText = dataOrder.sticker_detail;
+            document.getElementById('invoicePrice').innerText = 'Rp ' + dataOrder.total_price.toLocaleString('id-ID');
+            
+            // Jaga-jaga kalau namanya ga kebaca di URL, fallback pake nama dari dataOrder
+            if (!nameInput && dataOrder.customer_name) {
+                document.getElementById('invoiceName').innerText = dataOrder.customer_name;
+            }
         }
 
         // FUNGSI ANIMASI POP UP KETIKA TOMBOL DIKLIK
@@ -120,6 +141,8 @@
 
         // KEMBALI KE HALAMAN USER (TEMP.HTML)
         function kembaliBelanja() {
+            // Hapus cache orderan lama biar bersih
+            localStorage.removeItem('latest_order');
             window.location.href = 'temp.html';
         }
     </script>
